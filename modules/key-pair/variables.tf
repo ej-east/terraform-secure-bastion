@@ -21,6 +21,7 @@ variable "create_key" {
 variable "existing_key_path" {
   description = "The file path to an existing key"
   type = string
+  default = null
   validation {
     error_message = "If you want to use an existing you you must specify a filepath"
     condition = var.create_key || (var.existing_key_path != null && fileexists(var.existing_key_path))
