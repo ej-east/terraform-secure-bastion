@@ -1,6 +1,7 @@
 variable "tags" {
   description = "Common Tags"
   type = map(string)
+  default = {}
 }
 
 variable "name_prefix" {

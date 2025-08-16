@@ -16,5 +16,7 @@ resource "aws_key_pair" "ec2_secure_key" {
     key_name_prefix = var.name_prefix
     public_key = var.create_key ? tls_private_key.rsa_private_key[0].public_key_openssh : file(var.existing_key_path)
     
-    tags = var.tags
+    tags = merge(var.tags, {
+      Name = "${var.name_prefix}-keypair"
+    })
 }
