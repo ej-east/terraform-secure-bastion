@@ -1,0 +1,25 @@
+*
+
+# Allow terraform
+!terraform
+!terraform/*.tf
+
+# Allow terraform modules
+!terraform/modules
+
+## EC2 Module
+!terraform/modules/ec2-secure
+!terraform/modules/ec2-secure/*.tf
+
+## Key Pair Module
+!terraform/modules/key-pair
+!terraform/modules/key-pair/*.tf
+
+## ECR Module
+!terraform/modules/ecr
+!terraform/modules/ecr/*.tf
+
+# Allow misc files
+!.gitignore
+!LICENSE
+!README.MD
