@@ -1,23 +1,22 @@
 *
 
 # Allow terraform
-!terraform
-!terraform/*.tf
+!*.tf
 
 # Allow terraform modules
-!terraform/modules
+!modules
 
 ## EC2 Module
-!terraform/modules/ec2-secure
-!terraform/modules/ec2-secure/*.tf
+!modules/ec2-secure
+!modules/ec2-secure/*.tf
 
 ## Key Pair Module
-!terraform/modules/key-pair
-!terraform/modules/key-pair/*.tf
+!modules/key-pair
+!modules/key-pair/*.tf
 
 ## ECR Module
-!terraform/modules/ecr
-!terraform/modules/ecr/*.tf
+!modules/ecr
+!modules/ecr/*.tf
 
 # Allow misc files
 !.gitignore
