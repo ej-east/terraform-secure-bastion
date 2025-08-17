@@ -21,6 +21,10 @@
 # Allow example tfvars
 !terraform.tfvars.example
 
+# Allow userscripts
+!user_data
+!user_data/boot.sh
+
 # Allow misc files
 !.gitignore
 !LICENSE
