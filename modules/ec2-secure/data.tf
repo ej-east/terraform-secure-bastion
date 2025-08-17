@@ -1,3 +1,6 @@
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
 data "aws_subnet" "selected" {
   id = var.subnet_id
 }
@@ -21,5 +24,15 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["dlm.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}

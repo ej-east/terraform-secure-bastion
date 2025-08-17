@@ -1,3 +1,7 @@
+#####################
+## Cloud Watch IAM ##
+#####################
+
 resource "aws_iam_policy" "cloudwatch_agent_policy" {
   name_prefix = var.name_prefix
 
@@ -52,7 +56,9 @@ resource "aws_iam_policy" "cloudwatch_agent_policy" {
       }
     ]
   })
-  tags = var.tags
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-dlm"
+  })
 }
 
 
@@ -71,7 +77,9 @@ resource "aws_iam_role" "cloudwatch_agent_role" {
     ]
   })
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-dlm"
+  })
 }
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
   role       = aws_iam_role.cloudwatch_agent_role.name
@@ -81,4 +89,45 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
 resource "aws_iam_instance_profile" "cloudwatch_instance_profile" {
   name_prefix = var.name_prefix
   role        = aws_iam_role.cloudwatch_agent_role.name
+}
+
+#############
+## DLM IAM ##
+#############
+resource "aws_iam_role" "dlm_lifecycle_role" {
+  name               = "dlm-lifecycle-role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+data "aws_iam_policy_document" "dlm_lifecycle" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:DeleteSnapshot",
+      "ec2:DescribeInstances",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeSnapshots",
+    ]
+
+    resources = [
+      "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:volume/*"
+    ]
+  }
+
+  statement {
+    effect  = "Allow"
+    actions = ["ec2:CreateTags", "ec2:DeleteSnapshot"]
+    resources = [
+      "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:volume/*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "dlm_lifecycle" {
+  name   = "dlm-lifecycle-policy"
+  role   = aws_iam_role.dlm_lifecycle_role.id
+  policy = data.aws_iam_policy_document.dlm_lifecycle.json
 }

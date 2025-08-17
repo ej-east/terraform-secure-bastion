@@ -55,6 +55,16 @@ variable "encrypt" {
   default     = true
 }
 
+variable "dlm_retain_policy" {
+  description = "How many days should we keep the EBS snapshots (in days)"
+  type        = number
+  default     = 14
+  validation {
+    error_message = "We need to keep EBS snapshots for 7 days minimum"
+    condition     = var.dlm_retain_policy >= 7
+  }
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
