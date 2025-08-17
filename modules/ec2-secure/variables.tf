@@ -33,7 +33,6 @@ variable "user_data_file" {
 variable "allowed_cidr_blocks" {
   description = "List of CIDR blocks allowed to have access"
   type        = list(string)
-  default     = ["0.0.0.0/0"]
   validation {
     condition     = length(var.allowed_cidr_blocks) > 0
     error_message = "At least one CIDR block is required"
