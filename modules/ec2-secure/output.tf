@@ -3,7 +3,7 @@ output "bastion_host_public_ip" {
   value       = aws_instance.bastion_host.public_ip
 }
 
-output "bastion_host_id" {
+output "bastion_instance_id" {
   description = "The ID of the bastion_host"
   value       = aws_instance.bastion_host.id
 }
