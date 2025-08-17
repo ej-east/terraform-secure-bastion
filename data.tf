@@ -1,5 +1,5 @@
 data "aws_vpc" "default" {
-    default = true
+  default = true
 }
 
 data "aws_subnets" "public" {
@@ -7,7 +7,7 @@ data "aws_subnets" "public" {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
-  
+
   filter {
     name   = "map-public-ip-on-launch"
     values = ["true"]

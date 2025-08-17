@@ -1,10 +1,10 @@
 locals {
   common_tags = {
-    Project = "my-ec2-project"
+    Project     = var.project_name
     Environment = var.environment
-    Owner = "ej"
-    ManagedBy = "ej"
-    CreateDate = formatdate("YYYY-MM-DD", timestamp())
+    Owner       = "ej"
+    ManagedBy   = "ej"
+    CreateDate  = formatdate("YYYY-MM-DD", timestamp())
   }
 
   name_prefix = "${var.project_name}-${var.environment}"
@@ -13,10 +13,10 @@ locals {
 
 module "keypair" {
   source = "./modules/key-pair"
-  
-  create_key = true
+
+  create_key  = true
   name_prefix = local.name_prefix
-  
+
   tags = local.common_tags
 }
 
@@ -24,10 +24,10 @@ module "aws_instance" {
   source = "./modules/ec2-secure"
 
   user_data_file = "./user_data/boot.sh"
-  subnet_id = data.aws_subnets.public.ids[0]
+  subnet_id      = data.aws_subnets.public.ids[0]
 
   name_prefix = local.name_prefix
-  key_name = module.keypair.key_name
+  key_name    = module.keypair.key_name
 
   tags = local.common_tags
 }
