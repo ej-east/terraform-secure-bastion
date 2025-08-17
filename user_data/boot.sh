@@ -75,6 +75,23 @@ EOF
 
 sshd -t && systemctl restart sshd
 
+yum install audit -y
+
+cat > /etc/audit/rules.d/audit.rules << 'EOF'
+-w /etc/passwd -p rwa -k passwd_read_write
+-w /etc/shadow -p rwa -k shadow_read_write
+-w /etc/group -p rwa -k group_read_write
+
+-w /etc/ssh/sshd_config -p wa -k ssh_config_changes
+
+-a always,exit -F arch=b64 -S execve -F auid>=1000 -F auid!=4294967295 -k sudo_commands
+-a always,exit -F arch=b32 -S execve -F auid>=1000 -F auid!=4294967295 -k sudo_commands
+EOF
+
+systemctl enable auditd
+systemctl start auditd
+
+
 # Cloudwatch agent
 sudo yum install amazon-cloudwatch-agent -y
 
@@ -138,6 +155,12 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
             "file_path": "/var/log/messages",
             "log_group_name": "/ec2/messages",
             "log_stream_name": "{instance_id}/messages", 
+            "timestamp_format": "%b %d %H:%M:%S"
+          },
+          {
+            "file_path": "/var/log/audit/audit.log",
+            "log_group_name": "/ec2/audit",
+            "log_stream_name": "{instance_id}/audit", 
             "timestamp_format": "%b %d %H:%M:%S"
           }
         ]
