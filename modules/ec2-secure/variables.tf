@@ -28,6 +28,10 @@ variable "ami_id" {
 variable "user_data_file" {
   description = "Path to user data script file"
   type        = string
+  validation {
+    error_message = "User datafile must exist"
+    condition     = fileexists(var.user_data_file)
+  }
 }
 
 variable "allowed_cidr_blocks" {
