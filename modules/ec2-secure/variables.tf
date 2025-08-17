@@ -45,6 +45,12 @@ variable "allowed_ports" {
   default     = [22]
 }
 
+variable "encrypt" {
+  description = "Add EBS encryption to the aws_instance"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)

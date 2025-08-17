@@ -38,7 +38,10 @@ resource "aws_instance" "bastion_host" {
     http_tokens   = "required"
   }
 
-
+  root_block_device {
+    encrypted   = var.encrypt
+    volume_type = "gp3"
+  }
   tags = merge(var.tags, {
     Name = "${var.name_prefix}-bastion-host"
   })
