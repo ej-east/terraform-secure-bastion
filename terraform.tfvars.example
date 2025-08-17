@@ -1,0 +1,3 @@
+project_name= "my-bastion"
+environment = "dev"
+allowed_cidr_blocks = ["IP ADRRESS/32"]

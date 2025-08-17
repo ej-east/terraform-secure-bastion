@@ -18,6 +18,9 @@
 !modules/ecr
 !modules/ecr/*.tf
 
+# Allow example tfvars
+!terraform.tfvars.example
+
 # Allow misc files
 !.gitignore
 !LICENSE
