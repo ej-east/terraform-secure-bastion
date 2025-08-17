@@ -32,6 +32,7 @@ resource "aws_instance" "bastion_host" {
   vpc_security_group_ids      = [aws_security_group.bastion_host.id]
   associate_public_ip_address = true
   user_data                   = file(var.user_data_file)
+  iam_instance_profile        = aws_iam_instance_profile.cloudwatch_instance_profile.name
 
   metadata_options {
     http_endpoint = "enabled"

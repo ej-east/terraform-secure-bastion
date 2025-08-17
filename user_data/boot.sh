@@ -76,9 +76,78 @@ EOF
 sshd -t && systemctl restart sshd
 
 # Cloudwatch agent
-# sudo yum install amazon-cloudwatch-agent
+sudo yum install amazon-cloudwatch-agent -y
 
+REGION=$(aws configure get region || curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
+cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "region": "${REGION}",
+    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
+    "debug": false,
+    "run_as_user": "cwagent"
+  },
+  "metrics": {
+    "namespace": "CWAgent",
+    "metrics_collected": {
+      "cpu": {
+        "measurement": [
+          "cpu_usage_idle",
+          "cpu_usage_system",
+          "cpu_usage_user"
+        ],
+        "metrics_collection_interval": 60,
+        "totalcpu": false
+      },
+      "disk": {
+        "measurement": [
+          "used_percent",
+          "free"
+        ],
+        "metrics_collection_interval": 60,
+        "resources": ["*"]
+      },
+      "mem": {
+        "measurement": [
+          "mem_used_percent",
+          "mem_available_percent"
+        ],
+        "metrics_collection_interval": 60
+      }
+    }
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/secure",
+            "log_group_name": "/ec2/secure",
+            "log_stream_name": "{instance_id}/secure",
+            "timestamp_format": "%b %d %H:%M:%S"
+          },
+          {
+            "file_path": "/var/log/fail2ban.log",
+            "log_group_name": "/ec2/fail2ban", 
+            "log_stream_name": "{instance_id}/fail2ban",
+            "timestamp_format": "%Y-%m-%d %H:%M:%S"
+          },
+          {
+            "file_path": "/var/log/messages",
+            "log_group_name": "/ec2/messages",
+            "log_stream_name": "{instance_id}/messages", 
+            "timestamp_format": "%b %d %H:%M:%S"
+          }
+        ]
+      }
+    }
+  }
+}
+EOF
 
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 
-
+systemctl enable amazon-cloudwatch-agent
+systemctl start amazon-cloudwatch-agent
