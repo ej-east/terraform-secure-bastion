@@ -33,6 +33,11 @@ resource "aws_instance" "bastion_host" {
   associate_public_ip_address = true
   user_data                   = file(var.user_data_file)
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
 
   tags = merge(var.tags, {
     Name = "${var.name_prefix}-bastion-host"
