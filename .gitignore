@@ -29,3 +29,6 @@
 !.gitignore
 !LICENSE
 !README.MD
+
+# Allow pre-commits
+!.pre-commit-config.yaml
