@@ -1,10 +1,12 @@
 resource "aws_security_group" "bastion_host" {
   name_prefix = "${var.name_prefix}-bastion-host"
+  description = "This security group allows only ssh traffic from one IP address and allows traffic to go anywhere"
   vpc_id      = data.aws_subnet.selected.vpc_id
 
   dynamic "ingress" {
     for_each = var.allowed_ports
     content {
+      description = "Only allows SSH traffic from a specified IP"
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
@@ -13,10 +15,30 @@ resource "aws_security_group" "bastion_host" {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP for package updates"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    #tfsec:ignore:aws-ec2-no-public-egress-sgr
+    cidr_blocks = ["0.0.0.0/0"] # Required for updates
+  }
+
+  egress {
+    description = "HTTPS for package updates"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    #tfsec:ignore:aws-ec2-no-public-egress-sgr
+    cidr_blocks = ["0.0.0.0/0"] # Required for updates
+
+  }
+
+  egress {
+    description = "SSH to private subents"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.selected.cidr_block]
   }
 
   tags = merge(var.tags, {
@@ -43,6 +65,12 @@ resource "aws_instance" "bastion_host" {
     encrypted   = var.encrypt
     volume_type = "gp3"
   }
+
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = [ami]
+  }
+
   tags = merge(var.tags, {
     Name = "${var.name_prefix}-bastion-host"
   })

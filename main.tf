@@ -20,7 +20,7 @@ module "keypair" {
   tags = local.common_tags
 }
 
-module "aws_instance" {
+module "bastion" {
   source = "./modules/ec2-secure"
 
   user_data_file      = "./user_data/boot.sh"
