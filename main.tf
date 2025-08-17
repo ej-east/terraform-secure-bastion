@@ -23,11 +23,11 @@ module "keypair" {
 module "aws_instance" {
   source = "./modules/ec2-secure"
 
-  user_data_file = "./user_data/boot.sh"
-  subnet_id      = data.aws_subnets.public.ids[0]
-
-  name_prefix = local.name_prefix
-  key_name    = module.keypair.key_name
+  user_data_file      = "./user_data/boot.sh"
+  subnet_id           = data.aws_subnets.public.ids[0]
+  allowed_cidr_blocks = var.allowed_cidr_blocks
+  name_prefix         = local.name_prefix
+  key_name            = module.keypair.key_name
 
   tags = local.common_tags
 }

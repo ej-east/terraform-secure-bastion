@@ -14,3 +14,12 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "allowed_cidr_blocks" {
+  description = "The CIDRs allowed to interact with bastion host"
+  type        = list(string)
+  validation {
+    error_message = "Cannot be all"
+    condition     = var.allowed_cidr_blocks == ["0.0.0.0/0"]
+  }
+}
