@@ -15,8 +15,8 @@ resource "aws_security_group" "bastion_host" {
   egress {
     from_port = 0
     to_port = 0
-    protocol = "tcp"
-    cidr_blocks = var.allowed_cidr_blocks
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   
   tags = merge(var.tags, {
@@ -25,11 +25,11 @@ resource "aws_security_group" "bastion_host" {
 }
 
 resource "aws_instance" "bastion_host" {
-  ami = var.ami_id
+  ami = coalesce(var.ami_id, data.aws_ami.amazon_linux_2.id)
   instance_type = var.instance_type
   key_name = var.key_name
   subnet_id = var.subnet_id
-  vpc_security_group_ids = aws_security_group.bastion_host.id
+  vpc_security_group_ids = [aws_security_group.bastion_host.id]
   associate_public_ip_address = true
   user_data = file(var.user_data_file)
   
