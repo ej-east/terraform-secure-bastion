@@ -31,3 +31,12 @@ module "bastion" {
 
   tags = local.common_tags
 }
+
+module "cloudwatch_bastion" {
+  source = "./modules/cloudwatch"
+
+  instance_name = "bastion_host"
+  instance_id   = module.bastion.bastion_instance_id
+
+  tags = local.common_tags
+}

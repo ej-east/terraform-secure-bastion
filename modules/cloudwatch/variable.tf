@@ -33,9 +33,15 @@ variable "disk_threshold_percent" {
 }
 
 variable "memory_threshold_percent" {
-  description = "Memort thresold to trigger alarm"
+  description = "Memory threshold to trigger alarm"
   type        = number
   default     = 85
+}
+
+variable "failed_ssh_threshold" {
+  description = "Failed SSH threshold to trigger alarm"
+  type        = number
+  default     = 3
 }
 
 variable "tags" {

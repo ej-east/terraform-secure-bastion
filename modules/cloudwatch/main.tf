@@ -75,3 +75,22 @@ resource "aws_cloudwatch_log_metric_filter" "failed_ssh" {
     value     = "1"
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "failed_ssh_alarm" {
+  alarm_name          = "${var.instance_name}-failed-ssh-attempts"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "FailedSSHAttempts"
+  namespace           = "CustomMetrics/${var.instance_name}"
+  period              = var.alarm_period
+  statistic           = "Sum"
+  threshold           = var.failed_ssh_threshold
+  alarm_description   = "Alert on excessive failed SSH attempts"
+  treat_missing_data  = "notBreaching"
+
+  tags = {
+    Name        = "${var.instance_name}-ssh-alarm"
+    Instance    = var.instance_name
+    MonitorType = "Security"
+  }
+}
