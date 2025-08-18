@@ -1,3 +1,4 @@
 project_name= "my-bastion"
 environment = "dev"
+bastion_email_subscriber_one = "example@example.com"
 allowed_cidr_blocks = ["IP ADRRESS/32"]

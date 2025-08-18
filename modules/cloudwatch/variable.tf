@@ -44,6 +44,13 @@ variable "failed_ssh_threshold" {
   default     = 3
 }
 
+variable "aws_sns_topic_arn" {
+  description = "The ARN of the SNS topic that you wish to trigger on alarm"
+  type        = string
+  default     = ""
+}
+
+
 variable "tags" {
   description = "List of tags"
   type        = map(string)

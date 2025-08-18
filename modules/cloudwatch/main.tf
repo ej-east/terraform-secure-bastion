@@ -8,6 +8,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
   statistic           = "Average"
   threshold           = var.cpu_threshold_percent
   alarm_description   = "This metric monitors CPU utilization"
+  alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
   dimensions = {
     InstanceId = var.instance_id
@@ -29,6 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_usage" {
   statistic           = "Average"
   threshold           = var.disk_threshold_percent
   alarm_description   = "This metric monitors disk utilization"
+  alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
   dimensions = {
     device = "xvda1"
@@ -52,6 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_usage" {
   statistic           = "Average"
   threshold           = var.memory_threshold_percent
   alarm_description   = "This metric monitors memory usage"
+  alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
   dimensions = {
     InstanceId = var.instance_id
@@ -87,6 +90,7 @@ resource "aws_cloudwatch_metric_alarm" "failed_ssh_alarm" {
   threshold           = var.failed_ssh_threshold
   alarm_description   = "Alert on excessive failed SSH attempts"
   treat_missing_data  = "notBreaching"
+  alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
   tags = {
     Name        = "${var.instance_name}-ssh-alarm"

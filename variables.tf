@@ -23,3 +23,12 @@ variable "allowed_cidr_blocks" {
     condition     = var.allowed_cidr_blocks != ["0.0.0.0/0"]
   }
 }
+
+variable "bastion_email_subscriber_one" {
+  description = "Email address of who to send the CloudWatch alarms"
+  type        = string
+  validation {
+    error_message = "Must be a valid email address"
+    condition     = can(regex("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/", var.bastion_email_subscriber_one))
+  }
+}

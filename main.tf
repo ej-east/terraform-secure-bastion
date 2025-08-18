@@ -40,3 +40,20 @@ module "cloudwatch_bastion" {
 
   tags = local.common_tags
 }
+
+resource "aws_kms_key" "aws_sns_topic" {
+  description             = "KMS key for SNS topic encryption"
+  deletion_window_in_days = 10
+  enable_key_rotation     = true
+}
+
+resource "aws_sns_topic" "bastion_sns" {
+  name              = "${local.name_prefix}-sns"
+  kms_master_key_id = aws_kms_key.aws_sns_topic.arn
+}
+
+resource "aws_sns_topic_subscription" "bastion_email_subscriber_one" {
+  topic_arn = aws_sns_topic.bastion_sns.arn
+  protocol  = "email"
+  endpoint  = var.bastion_email_subscriber_one
+}
