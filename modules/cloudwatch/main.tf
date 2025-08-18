@@ -71,7 +71,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_usage" {
 
 resource "aws_cloudwatch_log_metric_filter" "failed_ssh" {
   name           = "${var.instance_name}-failed-ssh"
-  log_group_name = "/ec2/secure"
+  log_group_name = "/${var.log_group_prefix}/${var.log_group_failed_ssh}"
   pattern        = "[Mon, day, timestamp, ip, id, msg1= Failed, msg2= password, ...]"
 
   metric_transformation {
