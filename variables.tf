@@ -23,12 +23,3 @@ variable "allowed_cidr_blocks" {
     condition     = var.allowed_cidr_blocks != ["0.0.0.0/0"]
   }
 }
-
-variable "backend_bucket_name" {
-  description = "Name of the bucket to terraform store state"
-  type        = string
-}
-variable "backend_bucket_key" {
-  description = "The path where the terraform state is written to [in the bucket]"
-  type        = string
-}
