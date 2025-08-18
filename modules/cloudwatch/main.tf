@@ -13,6 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
   dimensions = {
     InstanceId = var.instance_id
   }
+
   tags = merge(var.tags, {
     Name        = "${var.instance_name}-cpu-alarm"
     Instance    = var.instance_name
@@ -33,9 +34,10 @@ resource "aws_cloudwatch_metric_alarm" "disk_usage" {
   alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
   dimensions = {
-    device = "xvda1"
-    fstype = "xfs"
-    path   = "/"
+    InstanceId = var.instance_id
+    device     = "xvda1"
+    fstype     = "xfs"
+    path       = "/"
   }
   tags = merge(var.tags, {
     Name        = "${var.instance_name}-cpu-alarm"
