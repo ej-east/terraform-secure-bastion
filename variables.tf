@@ -31,6 +31,6 @@ variable "bastion_email_subscriber_one" {
   type        = string
   validation {
     error_message = "Must be a valid email address"
-    condition     = can(regex("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/", var.bastion_email_subscriber_one))
+    condition     = can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.bastion_email_subscriber_one))
   }
 }
