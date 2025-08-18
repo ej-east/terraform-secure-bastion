@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_usage" {
   period              = var.alarm_period
   statistic           = "Average"
   threshold           = var.disk_threshold_percent
-  alarm_description   = "This metric monitors disl utilization"
+  alarm_description   = "This metric monitors disk utilization"
 
   dimensions = {
     device = "xvda1"
