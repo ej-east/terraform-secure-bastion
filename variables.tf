@@ -20,7 +20,9 @@ variable "allowed_cidr_blocks" {
   type        = list(string)
   validation {
     error_message = "Cannot be all"
-    condition     = var.allowed_cidr_blocks != ["0.0.0.0/0"]
+    condition = alltrue([
+      for cidr in var.allowed_cidr_blocks : cidr != ["0.0.0.0/0"]
+    ])
   }
 }
 
