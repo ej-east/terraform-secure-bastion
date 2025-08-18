@@ -1,0 +1,32 @@
+variable "instance_name" {
+  description = "The name of the AWS instance"
+  type        = string
+}
+
+variable "instance_id" {
+  description = "AWS instance ID to monitor"
+  type        = string
+}
+
+variable "evaluation_periods" {
+  description = "Number of periods to evaluate before alarming"
+  type        = number
+  default     = 2
+}
+
+variable "alarm_period" {
+  description = "Period in seconds for alarm evaluation"
+  type        = number
+  default     = 300
+}
+
+variable "cpu_threshold_percent" {
+  description = "CPU threshold to trigger alarm"
+  type        = number
+  default     = 80
+}
+
+variable "tags" {
+  description = "List of tags"
+  type        = map(string)
+}

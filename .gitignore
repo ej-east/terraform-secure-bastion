@@ -18,6 +18,10 @@
 !modules/ecr
 !modules/ecr/*.tf
 
+## CloudWatch Module
+!modules/cloudwatch
+!modules/cloudwatch/*.tf
+
 # Allow example tfvars
 !terraform.tfvars.example
 
