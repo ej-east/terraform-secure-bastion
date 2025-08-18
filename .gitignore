@@ -32,3 +32,8 @@
 
 # Allow pre-commits
 !.pre-commit-config.yaml
+
+# Allow GitHub Actions
+!.github
+!.github/workflow
+!.github/workflow/*.yaml
