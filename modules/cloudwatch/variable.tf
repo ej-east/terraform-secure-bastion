@@ -53,13 +53,13 @@ variable "aws_sns_topic_arn" {
 variable "log_group_prefix" {
   description = "Log Group Prefix"
   type        = string
-  default     = "/ec2"
+  default     = "ec2"
 }
 
 variable "log_group_failed_ssh" {
   description = "The log group for failed SSH"
   type        = string
-  default     = "/secure"
+  default     = "secure"
 }
 
 
