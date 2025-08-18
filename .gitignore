@@ -35,5 +35,5 @@
 
 # Allow GitHub Actions
 !.github
-!.github/workflow
-!.github/workflow/*.yaml
+!.github/workflows
+!.github/workflows/*.yaml
