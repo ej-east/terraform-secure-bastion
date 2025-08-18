@@ -31,6 +31,13 @@ variable "disk_threshold_percent" {
   type        = number
   default     = 80
 }
+
+variable "memory_threshold_percent" {
+  description = "Memort thresold to trigger alarm"
+  type        = number
+  default     = 85
+}
+
 variable "tags" {
   description = "List of tags"
   type        = map(string)
