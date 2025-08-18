@@ -17,6 +17,10 @@ variable "instance_type" {
   description = "EC2 instance type"
   type        = string
   default     = "t3.micro"
+  validation {
+    error_message = "Instance type must be one of the following t3.micro, t3.small, t4g.micro, t4g.small"
+    condition     = contains(["t3.micro", "t3.small", "t4g.micro", "t4g.small"], var.instance_type)
+  }
 }
 
 variable "ami_id" {
