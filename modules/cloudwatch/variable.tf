@@ -26,6 +26,11 @@ variable "cpu_threshold_percent" {
   default     = 80
 }
 
+variable "disk_threshold_percent" {
+  description = "Disk threshold to trigger alarm"
+  type        = number
+  default     = 80
+}
 variable "tags" {
   description = "List of tags"
   type        = map(string)
