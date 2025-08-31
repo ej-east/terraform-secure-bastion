@@ -1,3 +1,12 @@
+resource "aws_cloudwatch_log_group" "failed_ssh" {
+  name              = "/${var.log_group_prefix}/${var.log_group_failed_ssh}"
+  retention_in_days = 7
+
+  tags = merge(var.tags, {
+    Name = "${var.instance_name}-failed-ssh-log-group"
+  })
+}
+
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
   alarm_name          = "${var.instance_name}-cpu-usage"
   comparison_operator = "GreaterThanThreshold"
@@ -71,7 +80,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_usage" {
 
 resource "aws_cloudwatch_log_metric_filter" "failed_ssh" {
   name           = "${var.instance_name}-failed-ssh"
-  log_group_name = "/${var.log_group_prefix}/${var.log_group_failed_ssh}"
+  log_group_name = aws_cloudwatch_log_group.failed_ssh.name
   pattern        = "[Mon, day, timestamp, ip, id, msg1= Failed, msg2= password, ...]"
 
   metric_transformation {
