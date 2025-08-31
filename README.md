@@ -41,7 +41,7 @@ This module provisions a secure bastion host infrastructure with automated secur
 The repository consists of three specialized Terraform modules working in concert:
 
 #### 1. EC2 Secure Module (`modules/ec2-secure/`)
-- Hardened EC2 bastion instance with Amazon Linux 2023
+- Hardened EC2 bastion instance with Amazon Linux 2
 - Security group with restrictive SSH access (validated CIDR blocks)
 - IAM roles and instance profiles for CloudWatch and DLM
 - Encrypted EBS volumes with automated snapshot lifecycle
