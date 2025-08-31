@@ -49,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_usage" {
     path       = "/"
   }
   tags = merge(var.tags, {
-    Name        = "${var.instance_name}-cpu-alarm"
+    Name        = "${var.instance_name}-disk-alarm"
     Instance    = var.instance_name
     MonitorType = "Disk"
   })
@@ -71,11 +71,11 @@ resource "aws_cloudwatch_metric_alarm" "memory_usage" {
     InstanceId = var.instance_id
   }
 
-  tags = {
+  tags = merge(var.tags, {
     Name        = "${var.instance_name}-memory-alarm"
     Instance    = var.instance_name
     MonitorType = "Memory"
-  }
+  })
 }
 
 resource "aws_cloudwatch_log_metric_filter" "failed_ssh" {
@@ -103,9 +103,9 @@ resource "aws_cloudwatch_metric_alarm" "failed_ssh_alarm" {
   treat_missing_data  = "notBreaching"
   alarm_actions       = var.aws_sns_topic_arn != "" ? [var.aws_sns_topic_arn] : []
 
-  tags = {
+  tags = merge(var.tags, {
     Name        = "${var.instance_name}-ssh-alarm"
     Instance    = var.instance_name
     MonitorType = "Security"
-  }
+  })
 }

@@ -57,7 +57,7 @@ resource "aws_iam_policy" "cloudwatch_agent_policy" {
     ]
   })
   tags = merge(var.tags, {
-    Name = "${var.name_prefix}-dlm"
+    Name = "${var.name_prefix}-cloudwatch-policy"
   })
 }
 
@@ -78,7 +78,7 @@ resource "aws_iam_role" "cloudwatch_agent_role" {
   })
 
   tags = merge(var.tags, {
-    Name = "${var.name_prefix}-dlm"
+    Name = "${var.name_prefix}-cloudwatch-role"
   })
 }
 resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
@@ -95,8 +95,12 @@ resource "aws_iam_instance_profile" "cloudwatch_instance_profile" {
 ## DLM IAM ##
 #############
 resource "aws_iam_role" "dlm_lifecycle_role" {
-  name               = "dlm-lifecycle-role"
+  name_prefix        = "${var.name_prefix}-dlm-"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-dlm-role"
+  })
 }
 
 data "aws_iam_policy_document" "dlm_lifecycle" {
@@ -127,7 +131,7 @@ data "aws_iam_policy_document" "dlm_lifecycle" {
 }
 
 resource "aws_iam_role_policy" "dlm_lifecycle" {
-  name   = "dlm-lifecycle-policy"
+  name   = "${var.name_prefix}-dlm-lifecycle-policy"
   role   = aws_iam_role.dlm_lifecycle_role.id
   policy = data.aws_iam_policy_document.dlm_lifecycle.json
 }
