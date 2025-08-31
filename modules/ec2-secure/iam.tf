@@ -29,7 +29,7 @@ resource "aws_iam_policy" "cloudwatch_agent_policy" {
           "logs:CreateLogGroup"
         ],
         "Resource" : [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*"
+          "arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*"
         ]
       },
       {
@@ -41,8 +41,8 @@ resource "aws_iam_policy" "cloudwatch_agent_policy" {
           "logs:PutRetentionPolicy"
         ],
         "Resource" : [
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*",
-          "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*:*"
+          "arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*",
+          "arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ec2/${var.name_prefix}*:*"
         ]
       },
       {
@@ -51,7 +51,7 @@ resource "aws_iam_policy" "cloudwatch_agent_policy" {
           "ssm:GetParameter"
         ],
         "Resource" : [
-          "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/AmazonCloudWatch-*"
+          "arn:aws:ssm:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:parameter/AmazonCloudWatch-*"
         ]
       }
     ]
@@ -113,7 +113,7 @@ data "aws_iam_policy_document" "dlm_lifecycle" {
     ]
 
     resources = [
-      "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:volume/*"
+      "arn:aws:ec2:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:volume/*"
     ]
   }
 
@@ -121,7 +121,7 @@ data "aws_iam_policy_document" "dlm_lifecycle" {
     effect  = "Allow"
     actions = ["ec2:CreateTags", "ec2:DeleteSnapshot"]
     resources = [
-      "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:volume/*"
+      "arn:aws:ec2:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:volume/*"
     ]
   }
 }
