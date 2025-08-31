@@ -33,6 +33,8 @@
 !.gitignore
 !LICENSE
 !README.MD
+!images/
+!images/aws_graphic.png
 
 # Allow pre-commits
 !.pre-commit-config.yaml
