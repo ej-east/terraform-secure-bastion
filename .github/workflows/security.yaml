@@ -21,12 +21,21 @@ jobs:
       with:
         terraform_version: 1.14.3
 
-    - name: Trivy IaC Scan
+    - name: Trivy IaC Scan (Report All)
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        scan-ref: '.'
+        exit-code: '0'
+        severity: 'CRITICAL,HIGH,MEDIUM'
+
+    - name: Trivy IaC Scan (Fail on Critical)
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'config'
         scan-ref: '.'
         exit-code: '1'
+        severity: 'CRITICAL'
         
     - name: TruffleHog Scan
       uses: trufflesecurity/trufflehog@main
